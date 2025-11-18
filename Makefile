@@ -1,6 +1,4 @@
 # Makefile
-
-
 BUILD_DIR := build
 
 # OpenOCD
@@ -8,7 +6,7 @@ OPENOCD_SCRIPTS ?= $(OPENOCD_PATH)/tcl
 OPENOCD_CMD = openocd -s $(OPENOCD_SCRIPTS) -f openocd.cfg
 TARGET = keypad-fw
 
-.PHONY: all
+.PHONY: all build clean rebuild
 
 all: build
 
@@ -21,6 +19,8 @@ build:
 clean:
 	@echo "Cleaning build directory..."
 	@rm -rf $(BUILD_DIR)
+
+rebuild: clean build
 
 debug:
 	@echo "Starting OpenOCD in debug mode..."
