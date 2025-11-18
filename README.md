@@ -13,3 +13,8 @@ make debug
 
 ```
 
+```bash
+# to display serial output
+picocom <device> -b 115200
+```
+
