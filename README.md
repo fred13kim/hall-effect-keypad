@@ -1,5 +1,12 @@
 # Senior Project - Hall Effect Switch
 
+## Preliminary Requirements & Setup
+This project runs off of the Pico-SDK, raspberrypi fork of the FreeRTOS-Kernel,
+and the raspberrypi fork of OpenOCD.
+
+
+
+## CLI Usage
 
 ```bash
 # to compile project
