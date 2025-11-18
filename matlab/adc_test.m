@@ -20,3 +20,6 @@ volts = volts(1:N);
 
 figure;
 plot(volts);
+xlabel("Samples");
+ylabel("Voltage [V]");
+title("Voltage Measurements on RP2350 ADC of 3V Peak-to-Peak 10Hz Sin Wave");
