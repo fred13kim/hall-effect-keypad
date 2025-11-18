@@ -8,7 +8,6 @@ message(STATUS "PICO_SDK_PATH EXISTS AT " $ENV{PICO_SDK_PATH})
 set(PICO_SDK_PATH $ENV{PICO_SDK_PATH})
 
 set(PICO_BOARD pico2)
-set(PICO_PLATFORM rp2350-arm-s)
 
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
