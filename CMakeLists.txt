@@ -25,10 +25,12 @@ add_subdirectory(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2350_ARM_NTZ
     FreeRtos-Kernel)
 
 add_executable(${TARGET_NAME}
-    ${SRC}/hello.c)
+    ${SRC}/adc_test.c)
 
 target_link_libraries(${TARGET_NAME}
     pico_stdlib
+    hardware_adc
+    hardware_gpio
     FreeRTOS-Kernel-Heap4
 )
 
