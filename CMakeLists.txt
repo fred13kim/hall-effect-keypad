@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.22)
 
 if (NOT DEFINED ENV{PICO_SDK_PATH})
     message(FATAL_ERROR "PICO_SDK_PATH DOES NOT EXIST")
