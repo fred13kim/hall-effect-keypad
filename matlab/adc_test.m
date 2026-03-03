@@ -22,4 +22,6 @@ figure;
 plot(volts);
 xlabel("Samples");
 ylabel("Voltage [V]");
-title("Voltage Measurements on RP2350 ADC of 3V Peak-to-Peak 10Hz Sin Wave");
+title("Voltage Measurements on RP2350 ADC of 3V Peak-to-Peak 10Hz Sin Wave Sampled at ~1 KHz");
+
+exportgraphics(gcf, 'adc_test_plot.png', 'Resolution', 300);
