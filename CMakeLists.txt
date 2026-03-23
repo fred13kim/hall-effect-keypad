@@ -25,16 +25,21 @@ add_subdirectory(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2350_ARM_NTZ
     FreeRtos-Kernel)
 
 add_executable(${TARGET_NAME}
-    ${SRC}/adc_test.c)
+    ${SRC}/main.c
+    ${SRC}/cdc_usb_descriptors.c
+    )
 
 target_link_libraries(${TARGET_NAME}
     pico_stdlib
     hardware_adc
     hardware_gpio
     FreeRTOS-Kernel-Heap4
+    tinyusb_device
+    tinyusb_board
 )
 
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
 
-pico_enable_stdio_usb(${TARGET_NAME} 1)
+pico_enable_stdio_uart(${TARGET_NAME} 1)
+pico_add_extra_outputs(${TARGET_NAME})
 
