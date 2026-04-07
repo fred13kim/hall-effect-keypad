@@ -31,7 +31,7 @@ void adc_task(void *param) {
     adc_gpio_init(ADC_GPIO);
     adc_select_input(ADC_CHANNEL);
 
-    /*
+    /* CDC ADC TASK
     while (true) {
         if (tud_ready()) {
             uint16_t raw = adc_read();
@@ -45,7 +45,7 @@ void adc_task(void *param) {
         }
         vTaskDelay(pdMS_TO_TICKS(10)); // 100Hz sample rate
     }*/
-
+    
     while (true) {
 	    if (tud_hid_ready()) {
 		    uint16_t raw = adc_read();
@@ -53,6 +53,18 @@ void adc_task(void *param) {
 	    }
 	    vTaskDelay(pdMS_TO_TICKS(10));
     }
+
+    /* test hid report without ADC
+    uint16_t test = 0;
+
+    while(true) {
+	    if (tud_hid_ready()) {
+		    tud_hid_report(0, &test, sizeof(test));
+		    test = (test +64) & 0xFFF;
+	    }
+	    vTaskDelay(pdMS_TO_TICKS(10));
+    }*/
+    void 
 }
 
 int main(void) {
