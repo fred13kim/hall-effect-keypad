@@ -26,7 +26,7 @@ add_subdirectory(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2350_ARM_NTZ
 
 add_executable(${TARGET_NAME}
     ${SRC}/main.c
-    ${SRC}/cdc_usb_descriptors.c
+    ${SRC}/hid_usb_descriptors.c
     )
 
 target_link_libraries(${TARGET_NAME}
