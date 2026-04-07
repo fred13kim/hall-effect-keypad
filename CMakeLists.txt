@@ -31,6 +31,7 @@ target_link_libraries(${TARGET_NAME}
     pico_stdlib
     hardware_adc
     hardware_gpio
+    hardware_spi
     FreeRTOS-Kernel-Heap4
 )
 
