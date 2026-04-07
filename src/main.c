@@ -24,13 +24,14 @@ void usb_device_task(void *param) {
 
 void adc_task(void *param) {
     (void) param;
-    const float conversion_factor = 3.3f / (1 << 12);
-    char buf[64];
+    //const float conversion_factor = 3.3f / (1 << 12);
+    //char buf[64];
 
     adc_init();
     adc_gpio_init(ADC_GPIO);
     adc_select_input(ADC_CHANNEL);
 
+    /*
     while (true) {
         if (tud_ready()) {
             uint16_t raw = adc_read();
@@ -43,6 +44,14 @@ void adc_task(void *param) {
             tud_cdc_write_flush();
         }
         vTaskDelay(pdMS_TO_TICKS(10)); // 100Hz sample rate
+    }*/
+
+    while (true) {
+	    if (tud_hid_ready()) {
+		    uint16_t raw = adc_read();
+		    tud_hid_report(0, &raw, sizeof(raw));
+	    }
+	    vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
 
