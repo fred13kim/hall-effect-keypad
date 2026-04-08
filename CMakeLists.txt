@@ -40,5 +40,12 @@ target_link_libraries(${TARGET_NAME}
 
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
 
+target_compile_options(${TARGET_NAME} PRIVATE -ggdb3 -Og)
+
 pico_enable_stdio_usb(${TARGET_NAME} 1)
 
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/.gdbinit.in
+    ${CMAKE_CURRENT_BINARY_DIR}/.gdbinit
+    @ONLY
+)

@@ -1,0 +1,6 @@
+target extended-remote :3333
+mon reset init
+file @CMAKE_BINARY_DIR@/@TARGET_NAME@.elf
+layout src
+b main
+c
