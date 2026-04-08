@@ -10,10 +10,12 @@
 #define SPI_PORT spi0
 #define SPI_BAUDRATE 500 * 1000
 
-#define MISO_PIN 4
+#define SCK_PIN 2
+#define MISO_PIN 3
+#define MOSI_PIN 4
 #define CS_PIN 5
-#define SCK_PIN 6
-#define MOSI_PIN 7
+
+#define LED_PIN 25
 
 static mcp3008_inst_t mcp_dev = {
     .spi_dev = SPI_PORT,
@@ -28,7 +30,15 @@ int main(void){
     stdio_init_all();
 
     mcp3008_init(&mcp_dev);
-    
+
+    bool on_off = 0;
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
+    for(;;) {
+        gpio_put(LED_PIN, on_off);
+        on_off = !on_off;
+        sleep_ms(1000);
+    }
 
     /*
     adc_init();
