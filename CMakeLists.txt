@@ -24,6 +24,8 @@ pico_sdk_init()
 add_subdirectory(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2350_ARM_NTZ
     FreeRtos-Kernel)
 
+add_subdirectory(lib/mcp3008_spi)
+
 add_executable(${TARGET_NAME}
     ${SRC}/adc_test.c)
 
@@ -33,6 +35,7 @@ target_link_libraries(${TARGET_NAME}
     hardware_gpio
     hardware_spi
     FreeRTOS-Kernel-Heap4
+    mcp3008_spi
 )
 
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
