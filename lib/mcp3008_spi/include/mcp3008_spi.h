@@ -27,6 +27,6 @@ typedef struct {
 
 
 void mcp3008_init(mcp3008_inst_t *mcp_dev);
-void mcp3008_read(mcp3008_inst_t *mcp_dev);
+void mcp3008_read(mcp3008_inst_t *mcp_dev, mcp3008_channel_t ch);
 
 #endif // !MCP_3008_H
