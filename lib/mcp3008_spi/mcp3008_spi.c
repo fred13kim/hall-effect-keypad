@@ -15,13 +15,7 @@ void mcp3008_init(mcp3008_inst_t *mcp_dev) {
     gpio_put(mcp_dev->cs_pin, 1);
 }
 
-// cs low:
-// msg format:
-// ex for channel 0 single mode
-// 5'b11000
-// |start|s/d mode|D2|D1|D0
-// 
-void mcp3008_read(mcp3008_inst_t *mcp_dev, mcp3008_channel_t ch) {
+int mcp3008_read(mcp3008_inst_t *mcp_dev, mcp3008_channel_t ch, uint16_t *data) {
     uint8_t ch_config = 0x80 | ((ch & 0x07) << 4);
     uint8_t tx[3] = {
         0x01,       // start bit
@@ -35,6 +29,6 @@ void mcp3008_read(mcp3008_inst_t *mcp_dev, mcp3008_channel_t ch) {
     spi_write_read_blocking(mcp_dev->spi_dev, tx, rx, sizeof(tx));
     gpio_put(mcp_dev->cs_pin, 1);
 
-    uint16_t ret = ((rx[1] & 0x03) << 8) | rx[2];
-    printf("Dout: %d\n", ret);
+    *data = ((rx[1] & 0x03) << 8) | rx[2];
+    return 0;
 }
