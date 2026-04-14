@@ -63,8 +63,8 @@ void adc_task(void *param) {
 		    test = (test +64) & 0xFFF;
 	    }
 	    vTaskDelay(pdMS_TO_TICKS(10));
-    }*/
-    void 
+    }
+    void*/ 
 }
 
 int main(void) {
