@@ -24,6 +24,8 @@ pico_sdk_init()
 add_subdirectory(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2350_ARM_NTZ
     FreeRtos-Kernel)
 
+add_subdirectory(lib/mcp3008_spi)
+
 add_executable(${TARGET_NAME}
     ${SRC}/main.c
     ${SRC}/hid_usb_descriptors.c
@@ -31,11 +33,12 @@ add_executable(${TARGET_NAME}
 
 target_link_libraries(${TARGET_NAME}
     pico_stdlib
-    hardware_adc
     hardware_gpio
+    hardware_spi
     FreeRTOS-Kernel-Heap4
     tinyusb_device
     tinyusb_board
+    mcp3008_spi
 )
 
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
@@ -43,3 +46,9 @@ target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
 pico_enable_stdio_uart(${TARGET_NAME} 1)
 pico_add_extra_outputs(${TARGET_NAME})
 
+
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/.gdbinit.in
+    ${CMAKE_CURRENT_BINARY_DIR}/.gdbinit
+    @ONLY
+)
