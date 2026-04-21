@@ -1,17 +1,26 @@
 #include <stdio.h>
-#include <string.h>
+#include <stringdd.h>
 #include "pico/stdlib.h"
-#include "hardware/adc.h"
+#include "hardware/spi.h"
+#include "mcp3008_spi.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "tusb.h"
 
-#define ADC_GPIO        26
-#define ADC_CHANNEL     0
 #define USB_TASK_STACK  512
 #define ADC_TASK_STACK  512
 #define USB_TASK_PRIO   (configMAX_PRIORITIES - 1)
 #define ADC_TASK_PRIO   (configMAX_PRIORITIES - 2)
+
+static mcp3008_inst_t mcp = {
+    .spi_dev	= spi0,
+    .baudrate	= 1000000,
+    .mosi_pin	= 7,
+    .miso_pin	= 4,
+    .sck_pin	= 6,
+    .cs_pin	= 5,
+};
+
 
 void usb_device_task(void *param) {
     (void) param;
@@ -24,47 +33,19 @@ void usb_device_task(void *param) {
 
 void adc_task(void *param) {
     (void) param;
-    //const float conversion_factor = 3.3f / (1 << 12);
-    //char buf[64];
 
-    adc_init();
-    adc_gpio_init(ADC_GPIO);
-    adc_select_input(ADC_CHANNEL);
+    mcp3008_init(&mcp);
 
-    /* CDC ADC TASK
-    while (true) {
-        if (tud_ready()) {
-            uint16_t raw = adc_read();
-            float volts = raw * conversion_factor;
-
-            int len = snprintf(buf, sizeof(buf),
-                               "RAW: 0x%03x, VOLTS: %.4f V\r\n", raw, volts);
-
-            tud_cdc_write(buf, len);
-            tud_cdc_write_flush();
-        }
-        vTaskDelay(pdMS_TO_TICKS(10)); // 100Hz sample rate
-    }*/
-    
     while (true) {
 	    if (tud_hid_ready()) {
-		    uint16_t raw = adc_read();
-		    tud_hid_report(0, &raw, sizeof(raw));
+		    uint16_t raw[4]'
+		    for (int i = 0; i <= 3; i++) {
+			    mcp_read(&mcp, (mcp3008_channel_t)i, &raw[i]);
+		    }
+		    tud_hid_report(0, raw, sizeof(raw));
 	    }
 	    vTaskDelay(pdMS_TO_TICKS(10));
     }
-
-    /* test hid report without ADC
-    uint16_t test = 0;
-
-    while(true) {
-	    if (tud_hid_ready()) {
-		    tud_hid_report(0, &test, sizeof(test));
-		    test = (test +64) & 0xFFF;
-	    }
-	    vTaskDelay(pdMS_TO_TICKS(10));
-    }
-    void*/ 
 }
 
 int main(void) {
