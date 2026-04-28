@@ -26,9 +26,10 @@ add_subdirectory(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2350_ARM_NTZ
 
 add_subdirectory(lib/mcp3008_spi)
 
+add_subdirectory(lib/usb_descriptors)
+
 add_executable(${TARGET_NAME}
     ${SRC}/main.c
-    ${SRC}/hid_usb_descriptors.c
     )
 
 target_link_libraries(${TARGET_NAME}
@@ -39,6 +40,7 @@ target_link_libraries(${TARGET_NAME}
     tinyusb_device
     tinyusb_board
     mcp3008_spi
+    usb_descriptors
 )
 
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
