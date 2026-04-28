@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stringdd.h>
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
 #include "mcp3008_spi.h"
@@ -38,9 +37,9 @@ void adc_task(void *param) {
 
     while (true) {
 	    if (tud_hid_ready()) {
-		    uint16_t raw[4]'
+		    uint16_t raw[4];
 		    for (int i = 0; i <= 3; i++) {
-			    mcp_read(&mcp, (mcp3008_channel_t)i, &raw[i]);
+			    mcp3008_read(&mcp, (mcp3008_channel_t)i, &raw[i]);
 		    }
 		    tud_hid_report(0, raw, sizeof(raw));
 	    }
