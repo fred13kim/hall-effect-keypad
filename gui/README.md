@@ -14,14 +14,14 @@ A modularized PySide6 profile customization skeleton.
 ## Run
 
 ```bash
-python layout.py
+python3 layout.py
 ```
 
 ## Layout
 
 ```text
 profile_customizer_app/
-├── main.py
+├── layout.py
 ├── README.md
 └── profile_customizer/
     ├── __init__.py
@@ -33,7 +33,7 @@ profile_customizer_app/
     └── persistence.py
 ```
 
-## Where to edit
+## Files
 
 - `models.py`: pure profile/config dataclasses.
 - `mapping.py`: validation and normalized-voltage mapping logic.
