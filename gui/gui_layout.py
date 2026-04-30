@@ -272,16 +272,16 @@ class Dialog(QDialog):
         self.create_menu()
         self.create_profile_group()
 
-        big_editor = QTextEdit()
-        big_editor.setPlainText(
-            "Skeleton for per-profile interval mapping.\n\n"
-            "Each profile stores breakpoints + outputs.\n"
-            "Runtime mapping logic is centralized in map_voltage_to_output().\n"
-            "Persistence is versioned (profiles.json)."
-        )
+        # big_editor = QTextEdit()
+        # big_editor.setPlainText(
+        #     "Skeleton for per-profile interval mapping.\n\n"
+        #     "Each profile stores breakpoints + outputs.\n"
+        #     "Runtime mapping logic is centralized in map_voltage_to_output().\n"
+        #     "Persistence is versioned (profiles.json)."
+        # )
 
         button_box = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+             QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
         )
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
@@ -289,7 +289,7 @@ class Dialog(QDialog):
         main_layout = QVBoxLayout()
         main_layout.setMenuBar(self._menu_bar)
         main_layout.addWidget(self._profile_group)
-        main_layout.addWidget(big_editor)
+        # main_layout.addWidget(big_editor)
         main_layout.addWidget(button_box)
         self.setLayout(main_layout)
 

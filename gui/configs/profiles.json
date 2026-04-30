@@ -1,0 +1,213 @@
+{
+  "version": 2,
+  "profiles": {
+    "1": {
+      "buttons": {
+        "1": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "A",
+            "B",
+            "C"
+          ],
+          "hysteresis": 0.0
+        },
+        "2": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "D",
+            "E",
+            "F"
+          ],
+          "hysteresis": 0.0
+        },
+        "3": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "G",
+            "H",
+            "I"
+          ],
+          "hysteresis": 0.0
+        },
+        "4": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "J",
+            "K",
+            "L"
+          ],
+          "hysteresis": 0.0
+        }
+      }
+    },
+    "2": {
+      "buttons": {
+        "1": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "A",
+            "B",
+            "C"
+          ],
+          "hysteresis": 0.0
+        },
+        "2": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "D",
+            "E",
+            "F"
+          ],
+          "hysteresis": 0.0
+        },
+        "3": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "G",
+            "H",
+            "I"
+          ],
+          "hysteresis": 0.0
+        },
+        "4": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "J",
+            "K",
+            "L"
+          ],
+          "hysteresis": 0.0
+        }
+      }
+    },
+    "3": {
+      "buttons": {
+        "1": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "A",
+            "B",
+            "C"
+          ],
+          "hysteresis": 0.0
+        },
+        "2": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "D",
+            "E",
+            "F"
+          ],
+          "hysteresis": 0.0
+        },
+        "3": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "G",
+            "H",
+            "I"
+          ],
+          "hysteresis": 0.0
+        },
+        "4": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "J",
+            "K",
+            "L"
+          ],
+          "hysteresis": 0.0
+        }
+      }
+    },
+    "4": {
+      "buttons": {
+        "1": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "A",
+            "B",
+            "C"
+          ],
+          "hysteresis": 0.0
+        },
+        "2": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "D",
+            "E",
+            "F"
+          ],
+          "hysteresis": 0.0
+        },
+        "3": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "G",
+            "H",
+            "I"
+          ],
+          "hysteresis": 0.0
+        },
+        "4": {
+          "breakpoints": [
+            0.75,
+            0.5
+          ],
+          "outputs": [
+            "J",
+            "K",
+            "L"
+          ],
+          "hysteresis": 0.0
+        }
+      }
+    }
+  }
+}
