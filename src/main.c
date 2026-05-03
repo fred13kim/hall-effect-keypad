@@ -17,6 +17,8 @@
 #define MISO_PIN 4
 #define CS_PIN 5
 
+#define NUM_CHANNELS 4
+
 static mcp3008_inst_t mcp = {
     .spi_dev	= spi0,
     .baudrate	= BAUDRATE,
@@ -44,7 +46,7 @@ void adc_task(void *param) {
     while (true) {
 	    if (tud_hid_ready()) {
 		    uint16_t raw[4];
-		    for (mcp3008_channel_t ch = 0; ch < 4; ch++) {
+		    for (mcp3008_channel_t ch = MCP3008_CH0; ch < NUM_CHANNELS; ch++) {
 			    mcp3008_read(&mcp, ch, &raw[ch]);
 		    }
 		    tud_hid_report(0, raw, sizeof(raw));
