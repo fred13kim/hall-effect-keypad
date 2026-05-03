@@ -5,3 +5,9 @@ export OPENOCD_PATH=""
 
 ### DO NOT CHANGE ###
 export PATH="$OPENOCD_PATH/src:$PATH"
+
+layout python3
+
+if [ -f requirements.txt ]; then
+    pip install -r requirements.txt
+fi
