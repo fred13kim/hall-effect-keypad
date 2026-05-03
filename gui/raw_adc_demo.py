@@ -4,6 +4,8 @@ import sys
 from collections import deque
 from profile_manager import ProfileManager
 
+import struct
+
 import hid
 import pyqtgraph as pg
 from PySide6.QtCore import QTimer
@@ -32,6 +34,17 @@ class HIDReader:
                 adc_value = data[0] | (data[1] << 8)
             
         return adc_value
+
+    # returns an array of adc readings from channel 0 - 3
+    def read_adc_all_channels(self):
+        adc_value = None
+        while True:
+            data = self.device.read(64)
+
+            if not data:
+                break
+            adc_values = struct.unpack_from('<4H', bytes(data), 0)
+        return adc_values
 
     def close(self):
         self.device.close()
