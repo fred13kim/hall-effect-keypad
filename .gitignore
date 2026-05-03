@@ -2,3 +2,4 @@ build
 .envrc
 gui/configs/
 gui/profile_customizer/__pycache__
+.direnv
