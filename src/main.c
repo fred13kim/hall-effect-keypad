@@ -44,8 +44,8 @@ void adc_task(void *param) {
     while (true) {
 	    if (tud_hid_ready()) {
 		    uint16_t raw[4];
-		    for (int i = 0; i <= 3; i++) {
-			    mcp3008_read(&mcp, (mcp3008_channel_t)i, &raw[i]);
+		    for (mcp3008_channel_t ch = 0; ch < 4; ch++) {
+			    mcp3008_read(&mcp, ch, &raw[ch]);
 		    }
 		    tud_hid_report(0, raw, sizeof(raw));
 	    }
