@@ -50,7 +50,7 @@ class ProfileCustomizerDialog(QDialog):
 
     def _create_main_layout(self) -> None:
         button_box = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+            QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel
         )
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
@@ -165,7 +165,7 @@ class ProfileCustomizerDialog(QDialog):
     def _on_save_profiles(self) -> None:
         self._commit_ui_to_profile(self._current_profile_id)
         try:
-            save_profiles(self._profiles)
+            save_profiles(self._profiles, active_profile=self._current_profile_id)
             QMessageBox.information(self, "Saved", f"Saved to {PROFILES_PATH.resolve()}")
         except Exception as error:
             QMessageBox.critical(self, "Save failed", f"Could not save profiles:\n{error}")
@@ -262,7 +262,7 @@ class ProfileCustomizerDialog(QDialog):
     def accept(self) -> None:
         self._commit_ui_to_profile(self._current_profile_id)
         try:
-            save_profiles(self._profiles)
+            save_profiles(self._profiles, active_profile=self._current_profile_id)
         except Exception:
             pass
         super().accept()

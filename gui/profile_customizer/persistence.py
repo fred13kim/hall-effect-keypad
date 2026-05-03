@@ -42,8 +42,20 @@ def load_profiles(num_profiles: int = 4, profiles_path: Path = PROFILES_PATH) ->
         return default_profiles(num_profiles)
 
 
-def save_profiles(profiles: Dict[int, Profile], profiles_path: Path = PROFILES_PATH) -> None:
-    data: Dict[str, Any] = {"version": CURRENT_PROFILE_SCHEMA_VERSION, "profiles": {}}
+def save_profiles(profiles: Dict[int, Profile], profiles_path: Path = PROFILES_PATH, active_profile: int = 1,) -> None:
+    data: Dict[str, Any] = {
+        "version": CURRENT_PROFILE_SCHEMA_VERSION,
+        "active_profile": str(active_profile),
+        "hardware": {
+            "adc_channels": {
+                "0": "1",
+                "1": "2",
+                "2": "3",
+                "3": "4",
+            }
+        },
+        "profiles": {},
+    }
 
     for profile_id, profile in profiles.items():
         data["profiles"][str(profile_id)] = {
