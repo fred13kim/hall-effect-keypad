@@ -17,13 +17,10 @@ if str(PARENT_DIR) not in sys.path:
 
 from profile_manager import ProfileManager
 
-
-
 VID = 0xCAFE
 PID = 0x4004
 NUM_CHANNELS = 4
 CHANNEL_COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12"]
-
 
 class HIDReader:
     def __init__(self, vid, pid):
