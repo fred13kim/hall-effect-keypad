@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
+from profile_customizer.threshold_editor import ThresholdEditor
 from profile_customizer.defaults import default_profiles
 from profile_customizer.mapping import validate_interval_mapping
 from profile_customizer.models import IntervalMapping, Profile
@@ -73,7 +74,7 @@ class ProfileCustomizerDialog(QDialog):
         self._exit_action.triggered.connect(self.accept)
 
     def _create_profile_group(self) -> None:
-        self._profile_group = QGroupBox("Character Profiles (Interval Mapping)")
+        self._profile_group = QGroupBox("")
         outer_layout = QVBoxLayout()
 
         outer_layout.addLayout(self._build_profile_selector_row())
@@ -109,7 +110,7 @@ class ProfileCustomizerDialog(QDialog):
         self._button_group.idClicked.connect(self._on_button_selected)
 
         for button_id in range(1, self.num_buttons + 1):
-            button = QPushButton(f"Button {button_id}")
+            button = QPushButton(f"Key {button_id}")
             button.setCheckable(True)
             button.setChecked(button_id == 1)
             self._button_group.addButton(button, button_id)
@@ -118,23 +119,33 @@ class ProfileCustomizerDialog(QDialog):
         row.addStretch(1)
         return row
 
+    # def _build_mapping_form(self) -> QFormLayout:
+    #     form = QFormLayout()
+
+    #     self._mapping_json = QTextEdit()
+    #     self._mapping_json.setPlaceholderText(
+    #         '{\n  "breakpoints": [0.75, 0.5],\n'
+    #         '  "outputs": ["A", "B", "C"]\n}'
+    #     )
+    #     form.addRow("Mapping config (JSON):", self._mapping_json)
+
+    #     return form
+
     def _build_mapping_form(self) -> QFormLayout:
         form = QFormLayout()
 
-        self._mapping_json = QTextEdit()
-        self._mapping_json.setPlaceholderText(
-            '{\n  "breakpoints": [0.75, 0.5],\n'
-            '  "outputs": ["A", "B", "C"]\n}'
-        )
-        form.addRow("Mapping config (JSON):", self._mapping_json)
+        mapping = self._profiles[self._current_profile_id].buttons[self._current_button_id]
+        self._threshold_editor = ThresholdEditor(mapping)
+
+        form.addRow("Thresholds / outputs:", self._threshold_editor)
 
         return form
-
+    
     def _build_apply_reset_row(self) -> QHBoxLayout:
         row = QHBoxLayout()
 
-        self._apply_btn = QPushButton("Apply JSON to this button")
-        self._apply_btn.clicked.connect(self._on_apply_mapping_json)
+        self._apply_btn = QPushButton("Save mappings to this Key")
+        self._apply_btn.clicked.connect(self._on_apply_mapping)
         row.addWidget(self._apply_btn)
 
         self._reset_btn = QPushButton("Reset this profile")
@@ -167,40 +178,31 @@ class ProfileCustomizerDialog(QDialog):
         self._loading_ui = True
         try:
             mapping = self._profiles[profile_id].buttons[self._current_button_id]
-            with QSignalBlocker(self._mapping_json):
-                self._mapping_json.setPlainText(json.dumps(asdict(mapping), indent=2))
+            self._threshold_editor.set_mapping(mapping)
         finally:
             self._loading_ui = False
 
     def _commit_ui_to_profile(self, profile_id: int) -> None:
-        """Commit JSON only if valid; otherwise keep the previous mapping."""
+        """Commit threshold editor state only if valid."""
 
         if self._loading_ui:
             return
 
-        text = self._mapping_json.toPlainText().strip()
-        if not text:
-            return
-
         try:
-            mapping = self._mapping_from_json_text(text)
+            mapping = self._threshold_editor.mapping()
             self._profiles[profile_id].buttons[self._current_button_id] = mapping
         except Exception:
             return
 
-    def _on_apply_mapping_json(self) -> None:
+    def _on_apply_mapping(self) -> None:
         if self._loading_ui:
             return
 
-        old_mapping = self._profiles[self._current_profile_id].buttons[self._current_button_id]
-        text = self._mapping_json.toPlainText().strip()
-
         try:
-            mapping = self._mapping_from_json_text(text)
+            mapping = self._threshold_editor.mapping()
             self._profiles[self._current_profile_id].buttons[self._current_button_id] = mapping
-            QMessageBox.information(self, "Applied", "Mapping applied to this button.")
+            QMessageBox.information(self, "Applied", "Mapping applied to this Key.")
         except Exception as error:
-            self._mapping_json.setPlainText(json.dumps(asdict(old_mapping), indent=2))
             QMessageBox.critical(self, "Invalid mapping", f"Could not apply mapping:\n{error}")
 
     def _on_reset_profile(self) -> None:
