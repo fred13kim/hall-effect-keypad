@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from dataclasses import asdict
 from pathlib import Path
 from typing import Any, Dict
 
@@ -12,8 +11,7 @@ from profile_customizer.paths import PROFILES_PATH
 
 CURRENT_PROFILE_SCHEMA_VERSION = 2
 
-
-def load_profiles(num_profiles: int = 4, profiles_path: Path = PROFILES_PATH,) -> Dict[int, Profile]:
+def load_profiles(num_profiles: int = 4, profiles_path: Path = PROFILES_PATH) -> Dict[int, Profile]:
     profiles = default_profiles(num_profiles)
 
     if not profiles_path.exists():
@@ -21,15 +19,17 @@ def load_profiles(num_profiles: int = 4, profiles_path: Path = PROFILES_PATH,) -
 
     try:
         data = json.loads(profiles_path.read_text(encoding="utf-8"))
-        version = int(data.get("version", 2))
+        version = int(data.get("version", CURRENT_PROFILE_SCHEMA_VERSION))
     except Exception:
         return profiles
 
-    if version != 2:
+    if version != CURRENT_PROFILE_SCHEMA_VERSION:
         return profiles
 
     raw_profiles = data.get("profiles", {})
-    print(f"Loading profiles from: {profiles_path.resolve()}") # For user to know where profiles are load/saved to
+
+    print(f"Loading profiles from: {profiles_path.resolve()}")
+
     return _load_v2_profiles(raw_profiles, profiles, num_profiles)
 
 
@@ -47,11 +47,17 @@ def save_profiles(profiles: Dict[int, Profile], profiles_path: Path = PROFILES_P
         },
         "profiles": {},
     }
+
     print(f"Saving profiles to: {profiles_path.resolve()}")
+
     for profile_id, profile in profiles.items():
         data["profiles"][str(profile_id)] = {
             "buttons": {
-                str(button_id): asdict(mapping)
+                str(button_id): {
+                    # Preserve GUI order: high/rest threshold first, lower/harder-press threshold later.
+                    "breakpoints": list(mapping.breakpoints),
+                    "outputs": list(mapping.outputs),
+                }
                 for button_id, mapping in profile.buttons.items()
             }
         }
@@ -78,12 +84,14 @@ def _load_v2_profiles(raw_profiles: Dict[str, Any], profiles: Dict[int, Profile]
             button_json = buttons.get(str(button_id), {})
 
             try:
-                mapping = IntervalMapping(
-                    breakpoints=list(button_json.get("breakpoints", fallback.breakpoints)),
-                    outputs=list(button_json.get("outputs", fallback.outputs)),
-                )
+                breakpoints = list(button_json.get("breakpoints", fallback.breakpoints))
+
+                outputs = list(button_json.get("outputs", fallback.outputs))
+
+                mapping = IntervalMapping(reakpoints=breakpoints, outputs=outputs)
 
                 validate_interval_mapping(mapping)
+
                 profiles[profile_id].buttons[button_id] = mapping
 
             except Exception as error:
@@ -91,6 +99,7 @@ def _load_v2_profiles(raw_profiles: Dict[str, Any], profiles: Dict[int, Profile]
                     f"Invalid mapping in profile {profile_id}, "
                     f"button {button_id}: {error}"
                 )
+
                 profiles[profile_id].buttons[button_id] = fallback
 
     return profiles

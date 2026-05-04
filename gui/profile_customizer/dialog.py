@@ -1,26 +1,10 @@
 from __future__ import annotations
 
 import json
-from dataclasses import asdict
 from typing import Dict
 
 from PySide6.QtCore import QSignalBlocker
-from PySide6.QtWidgets import (
-    QButtonGroup,
-    QDialog,
-    QDialogButtonBox,
-    QFormLayout,
-    QGroupBox,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QMenu,
-    QMenuBar,
-    QMessageBox,
-    QPushButton,
-    QTextEdit,
-    QVBoxLayout,
-)
+from PySide6.QtWidgets import (QButtonGroup, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QMenu, QMenuBar, QMessageBox, QPushButton, QVBoxLayout)
 
 from profile_customizer.threshold_editor import ThresholdEditor
 from profile_customizer.defaults import default_profiles
@@ -29,10 +13,12 @@ from profile_customizer.models import IntervalMapping, Profile
 from profile_customizer.paths import PROFILES_PATH
 from profile_customizer.persistence import load_profiles, save_profiles
 
+NUM_BUTTONS = 4
+NUM_PROFILES = 4
 
 class ProfileCustomizerDialog(QDialog):
-    num_buttons = 4
-    num_profiles = 4
+    num_buttons = NUM_BUTTONS 
+    num_profiles = NUM_PROFILES
 
     def __init__(self) -> None:
         super().__init__()
@@ -51,8 +37,7 @@ class ProfileCustomizerDialog(QDialog):
 
     def _create_main_layout(self) -> None:
         button_box = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel
-        )
+            QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel)
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
 
@@ -118,18 +103,6 @@ class ProfileCustomizerDialog(QDialog):
 
         row.addStretch(1)
         return row
-
-    # def _build_mapping_form(self) -> QFormLayout:
-    #     form = QFormLayout()
-
-    #     self._mapping_json = QTextEdit()
-    #     self._mapping_json.setPlaceholderText(
-    #         '{\n  "breakpoints": [0.75, 0.5],\n'
-    #         '  "outputs": ["A", "B", "C"]\n}'
-    #     )
-    #     form.addRow("Mapping config (JSON):", self._mapping_json)
-
-    #     return form
 
     def _build_mapping_form(self) -> QFormLayout:
         form = QFormLayout()
