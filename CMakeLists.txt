@@ -15,6 +15,8 @@ set(FREERTOS_KERNEL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/FreeRTOS-Kernel)
 set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
 project(hall_effect_keypad C CXX ASM)
@@ -25,8 +27,8 @@ add_subdirectory(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2350_ARM_NTZ
     FreeRtos-Kernel)
 
 add_subdirectory(lib/mcp3008_spi)
-
 add_subdirectory(lib/usb_descriptors)
+add_subdirectory(lib/ssd1306_i2c)
 
 add_executable(${TARGET_NAME}
     ${SRC}/disp.c
@@ -36,6 +38,7 @@ target_link_libraries(${TARGET_NAME}
     pico_stdlib
     hardware_gpio
     hardware_spi
+    ssd1306_i2c
     # FreeRTOS-Kernel-Heap4
     # tinyusb_device
     # tinyusb_board
