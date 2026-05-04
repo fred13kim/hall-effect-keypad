@@ -25,16 +25,10 @@ def validate_interval_mapping(mapping: IntervalMapping) -> None:
             raise ValueError("breakpoints must be strictly decreasing, e.g. [0.75, 0.5].")
         previous = breakpoint
 
-    if not (0.0 <= float(mapping.hysteresis) <= 0.5):
-        raise ValueError("hysteresis must be within [0, 0.5].")
-
 
 def map_voltage_to_output(voltage: float, mapping: IntervalMapping) -> str:
     """
     Stateless normalized-voltage-to-output mapping.
-
-    Later, hysteresis, smoothing, nonlinear curves, or time-dependent behavior
-    can wrap or replace this function without changing the UI/persistence layer.
     """
 
     if not (0.0 <= voltage <= 1.0):

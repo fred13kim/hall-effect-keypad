@@ -4,7 +4,7 @@ import json
 from dataclasses import asdict
 from typing import Dict
 
-from PySide6.QtCore import QSignalBlocker, Qt
+from PySide6.QtCore import QSignalBlocker
 from PySide6.QtWidgets import (
     QButtonGroup,
     QDialog,
@@ -23,7 +23,7 @@ from PySide6.QtWidgets import (
 )
 
 from profile_customizer.defaults import default_profiles
-from profile_customizer.mapping import map_voltage_to_output, validate_interval_mapping
+from profile_customizer.mapping import validate_interval_mapping
 from profile_customizer.models import IntervalMapping, Profile
 from profile_customizer.paths import PROFILES_PATH
 from profile_customizer.persistence import load_profiles, save_profiles
@@ -80,7 +80,6 @@ class ProfileCustomizerDialog(QDialog):
         outer_layout.addLayout(self._build_button_selector_row())
         outer_layout.addLayout(self._build_mapping_form())
         outer_layout.addLayout(self._build_apply_reset_row())
-        outer_layout.addLayout(self._build_tester_row())
 
         self._profile_group.setLayout(outer_layout)
 
@@ -125,8 +124,7 @@ class ProfileCustomizerDialog(QDialog):
         self._mapping_json = QTextEdit()
         self._mapping_json.setPlaceholderText(
             '{\n  "breakpoints": [0.75, 0.5],\n'
-            '  "outputs": ["A", "B", "C"],\n'
-            '  "hysteresis": 0.0\n}'
+            '  "outputs": ["A", "B", "C"]\n}'
         )
         form.addRow("Mapping config (JSON):", self._mapping_json)
 
@@ -146,22 +144,6 @@ class ProfileCustomizerDialog(QDialog):
         row.addStretch(1)
         return row
 
-    def _build_tester_row(self) -> QHBoxLayout:
-        row = QHBoxLayout()
-        row.addWidget(QLabel("Test v ∈ [0, 1]:"))
-
-        self._test_v = QLineEdit()
-        self._test_v.setPlaceholderText("e.g. 0.83")
-        self._test_v.textChanged.connect(self._on_test_value_changed)
-        row.addWidget(self._test_v)
-
-        self._test_out = QLabel("→ (output)")
-        self._test_out.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        row.addWidget(self._test_out)
-        row.addStretch(1)
-
-        return row
-
     def _on_save_profiles(self) -> None:
         self._commit_ui_to_profile(self._current_profile_id)
         try:
@@ -175,13 +157,11 @@ class ProfileCustomizerDialog(QDialog):
         self._current_profile_id = profile_id
         self._load_profile_into_ui(profile_id)
         self.setWindowTitle(f"Profile Customizer — Profile {profile_id}")
-        self._update_test_output()
 
     def _on_button_selected(self, button_id: int) -> None:
         self._commit_ui_to_profile(self._current_profile_id)
         self._current_button_id = button_id
         self._load_profile_into_ui(self._current_profile_id)
-        self._update_test_output()
 
     def _load_profile_into_ui(self, profile_id: int) -> None:
         self._loading_ui = True
@@ -219,7 +199,6 @@ class ProfileCustomizerDialog(QDialog):
             mapping = self._mapping_from_json_text(text)
             self._profiles[self._current_profile_id].buttons[self._current_button_id] = mapping
             QMessageBox.information(self, "Applied", "Mapping applied to this button.")
-            self._update_test_output()
         except Exception as error:
             self._mapping_json.setPlainText(json.dumps(asdict(old_mapping), indent=2))
             QMessageBox.critical(self, "Invalid mapping", f"Could not apply mapping:\n{error}")
@@ -228,25 +207,6 @@ class ProfileCustomizerDialog(QDialog):
         profile_id = self._current_profile_id
         self._profiles[profile_id] = default_profiles(self.num_profiles, self.num_buttons)[profile_id]
         self._load_profile_into_ui(profile_id)
-        self._update_test_output()
-
-    def _on_test_value_changed(self, _text: str) -> None:
-        self._update_test_output()
-
-    def _update_test_output(self) -> None:
-        mapping = self._profiles[self._current_profile_id].buttons[self._current_button_id]
-        text = self._test_v.text().strip()
-
-        if not text:
-            self._test_out.setText("→ (output)")
-            return
-
-        try:
-            voltage = float(text)
-            output = map_voltage_to_output(voltage, mapping)
-            self._test_out.setText(f"→ {output}")
-        except Exception as error:
-            self._test_out.setText(f"→ error: {error}")
 
     @staticmethod
     def _mapping_from_json_text(text: str) -> IntervalMapping:
@@ -254,7 +214,6 @@ class ProfileCustomizerDialog(QDialog):
         mapping = IntervalMapping(
             breakpoints=list(obj.get("breakpoints", [])),
             outputs=list(obj.get("outputs", [])),
-            hysteresis=float(obj.get("hysteresis", 0.0)),
         )
         validate_interval_mapping(mapping)
         return mapping
