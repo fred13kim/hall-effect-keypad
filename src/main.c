@@ -51,7 +51,7 @@ void adc_task(void *param) {
 		    }
 		    tud_hid_report(0, raw, sizeof(raw));
 	    }
-	    vTaskDelay(pdMS_TO_TICKS(10));
+	    vTaskDelay(pdMS_TO_TICKS(1));
     }
 }
 
