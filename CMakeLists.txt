@@ -29,18 +29,18 @@ add_subdirectory(lib/mcp3008_spi)
 add_subdirectory(lib/usb_descriptors)
 
 add_executable(${TARGET_NAME}
-    ${SRC}/main.c
+    ${SRC}/disp.c
     )
 
 target_link_libraries(${TARGET_NAME}
     pico_stdlib
     hardware_gpio
     hardware_spi
-    FreeRTOS-Kernel-Heap4
-    tinyusb_device
-    tinyusb_board
-    mcp3008_spi
-    usb_descriptors
+    # FreeRTOS-Kernel-Heap4
+    # tinyusb_device
+    # tinyusb_board
+    # mcp3008_spi
+    # usb_descriptors
 )
 
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
