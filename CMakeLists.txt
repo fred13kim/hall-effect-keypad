@@ -31,7 +31,7 @@ add_subdirectory(lib/usb_descriptors)
 add_subdirectory(lib/ssd1306_i2c)
 
 add_executable(${TARGET_NAME}
-    ${SRC}/disp.c
+    ${SRC}/main.c
     )
 
 target_link_libraries(${TARGET_NAME}
