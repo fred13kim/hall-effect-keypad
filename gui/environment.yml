@@ -1,0 +1,7 @@
+name: snr-proj
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - pyside6
+  - pyqtgraph
