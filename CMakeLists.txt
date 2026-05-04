@@ -39,11 +39,11 @@ target_link_libraries(${TARGET_NAME}
     hardware_gpio
     hardware_spi
     ssd1306_i2c
-    # FreeRTOS-Kernel-Heap4
-    # tinyusb_device
-    # tinyusb_board
-    # mcp3008_spi
-    # usb_descriptors
+    FreeRTOS-Kernel-Heap4
+    tinyusb_device
+    tinyusb_board
+    mcp3008_spi
+    usb_descriptors
 )
 
 target_include_directories(${TARGET_NAME} PRIVATE ${INCLUDE})
