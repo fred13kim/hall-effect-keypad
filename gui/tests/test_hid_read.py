@@ -1,5 +1,3 @@
-# test_hid.py
-
 import hid
 
 VID = 0xCAFE
@@ -15,4 +13,4 @@ while True:
         adc3 = report[4] | (report[5] << 8)
         adc4 = report[6] | (report[7] << 8)
 
-        print(adc1)
+        print(adc1, adc2, adc3, adc4)

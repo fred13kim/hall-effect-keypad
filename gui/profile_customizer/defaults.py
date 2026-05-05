@@ -28,7 +28,6 @@ def default_profiles(num_profiles: int = 4, num_buttons: int = 4) -> Dict[int, P
             buttons[button_id] = IntervalMapping(
                 breakpoints=list(template.breakpoints),
                 outputs=list(template.outputs),
-                hysteresis=float(template.hysteresis),
             )
         profiles[profile_id] = Profile(buttons=buttons)
 

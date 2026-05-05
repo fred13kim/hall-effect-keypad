@@ -9,7 +9,7 @@ class IntervalMapping:
     """
     Pure configuration for piecewise interval mapping.
 
-    Voltage is assumed normalized to [0, 1]. If using raw ADC values, normalize
+    If using raw ADC values, normalize
     before calling the mapper.
 
     breakpoints: strictly decreasing list, e.g. [0.75, 0.50]
@@ -24,7 +24,6 @@ class IntervalMapping:
 
     breakpoints: List[float]
     outputs: List[str]
-    hysteresis: float = 0.0  # reserved for later; not used yet
 
 
 @dataclass
