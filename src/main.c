@@ -98,24 +98,28 @@ void adc_task(void *param) {
                 mcp3008_read(&mcp, ch, &raw[ch]);
                 int16_t delta = (int16_t)1023 - (int16_t)raw[ch];
                 if (delta < 0) { delta = 0; }
-
                 inv[ch] = (uint16_t)(delta * 4095 / 511);
                 if (inv[ch] > 4095) { inv[ch] = 4095; }
             }
 
-            // Steering: CH0=left, CH2=right, differential across full range
+            // Steering: CH0=left, CH2=right
             int16_t steering = ((int16_t)inv[MCP3008_CH2] - (int16_t)inv[MCP3008_CH0] + 4095) / 2;
             if (steering < 0)    steering = 0;
             if (steering > 4095) steering = 4095;
+
+            // Throttle/brake: CH3=up(forward), CH1=down(backward)
+            int16_t throttle = ((int16_t)inv[MCP3008_CH1] - (int16_t)inv[MCP3008_CH3] + 4095) / 2;
+            if (throttle < 0)    throttle = 0;
+            if (throttle > 4095) throttle = 4095;
 
             struct __attribute__((packed)) {
                 uint16_t x, y, z, rx;
                 uint8_t  buttons;
             } report = {
-                .x       = steering,            // steering (CH0 left, CH2 right)
-                .y       = 2047,                // unused, centered
-                .z       = inv[MCP3008_CH3],    // throttle (CH3 up)
-                .rx      = inv[MCP3008_CH1],    // brake (CH1 down)
+                .x       = steering,   // axis 0 - left/right
+                .y       = throttle,   // axis 1 - forward/backward
+                .z       = 2047,       // unused
+                .rx      = 2047,       // unused
                 .buttons = 0,
             };
 
