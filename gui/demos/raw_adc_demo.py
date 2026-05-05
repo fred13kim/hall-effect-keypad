@@ -22,6 +22,9 @@ PID = 0x4004
 NUM_CHANNELS = 4
 CHANNEL_COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12"]
 
+pg.setConfigOption("background", "w")
+pg.setConfigOption("foreground", "k")
+
 class HIDReader:
     def __init__(self, vid, pid):
         self.device = hid.Device(vid, pid)
@@ -46,7 +49,7 @@ class RawADCDemo(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Hall Effect Keypad – Multi-Channel ADC")
-        self.resize(1000, 700)
+        self.resize(900, 700)
 
         self.reader = HIDReader(VID, PID)
         config_path = PARENT_DIR / "configs" / "profiles.json"
@@ -81,7 +84,7 @@ class RawADCDemo(QMainWindow):
         # Top row: per-channel readout tiles
         readout_row = QHBoxLayout()
         for ch in range(NUM_CHANNELS):
-            box = QGroupBox(f"Channel {ch}")
+            box = QGroupBox(f"Channel {ch+1}")
             box_layout = QVBoxLayout(box)
 
             val_lbl = QLabel("ADC: ---")
@@ -101,7 +104,7 @@ class RawADCDemo(QMainWindow):
         plot_grid = QGridLayout()
         for ch in range(NUM_CHANNELS):
             plot = pg.PlotWidget(title=f"Channel {ch}")
-            plot.setYRange(200, 600)          # 12-bit ADC ceiling
+            plot.setYRange(0, 1024)          # 12-bit ADC ceiling
             plot.setXRange(0, 199, padding=0)
             plot.setLabel("left", "ADC")
             plot.setLabel("bottom", "Sample")
@@ -122,7 +125,7 @@ class RawADCDemo(QMainWindow):
         # Timer
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_adc)
-        self.timer.start(5)  # 5 ms  ~200 Hz poll
+        self.timer.start(3)  # 3 ms  ~333 Hz poll
     
     def update_active_profile_label(self):
         active_profile = self.profile_manager.get_active_profile_id()
