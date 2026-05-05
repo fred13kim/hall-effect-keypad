@@ -65,8 +65,9 @@ static void display_lcd(void) {
     ssd1306_clear(&ssd_dev0);
     ssd1306_clear(&ssd_dev1);
     ssd1306_draw_string(&ssd_dev0, 8, 0, 1, "The Cooper Union");
-    ssd1306_draw_string(&ssd_dev0, 8, 12, 1, "Analog Hall Effect");
-    ssd1306_draw_string(&ssd_dev0, 8, 24, 1, "Keyboard Switches");
+    ssd1306_draw_string(&ssd_dev0, 8, 12, 1, "Capstone Project");
+    ssd1306_draw_string(&ssd_dev0, 8, 24, 1, "Analog Hall Effect");
+    ssd1306_draw_string(&ssd_dev0, 8, 36, 1, "Keypad");
     ssd1306_draw_string(&ssd_dev1, 8, 0, 1, "Stephen Brockerhoff");
     ssd1306_draw_string(&ssd_dev1, 8, 12, 1, "Fred Kim");
     ssd1306_draw_string(&ssd_dev1, 8, 24, 1, "Anthony Kwon");
