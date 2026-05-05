@@ -92,22 +92,19 @@ void adc_task(void *param) {
     mcp3008_init(&mcp);
     while (true) {
         if (tud_hid_ready()) {
-            uint16_t raw[4];
+            uint16_t raw[NUM_CHANNELS];
+            uint16_t inv[NUM_CHANNELS];
             for (mcp3008_channel_t ch = MCP3008_CH0; ch < NUM_CHANNELS; ch++) {
                 mcp3008_read(&mcp, ch, &raw[ch]);
-            }
+                int16_t delta = (int16_t)1023 - (int16_t)raw[ch];
+                if (delta < 0) { delta = 0; }
 
-            // Invert and scale: rest~1024->0, pressed~512->4095
-            uint16_t inv[4];
-            for (int i = 0; i < 4; i++) {
-                int16_t delta = (int16_t)1023 - (int16_t)raw[i];
-                if (delta < 0)    delta = 0;
-                inv[i] = (uint16_t)(delta * 4095 / 511);
-                if (inv[i] > 4095) inv[i] = 4095;
+                inv[ch] = (uint16_t)(delta * 4095 / 511);
+                if (inv[ch] > 4095) { inv[ch] = 4095; }
             }
 
             // Steering: CH0=left, CH2=right, differential across full range
-            int16_t steering = ((int16_t)inv[2] - (int16_t)inv[0] + 4095) / 2;
+            int16_t steering = ((int16_t)inv[MCP3008_CH2] - (int16_t)inv[MCP3008_CH0] + 4095) / 2;
             if (steering < 0)    steering = 0;
             if (steering > 4095) steering = 4095;
 
@@ -115,10 +112,10 @@ void adc_task(void *param) {
                 uint16_t x, y, z, rx;
                 uint8_t  buttons;
             } report = {
-                .x       = steering,  // steering (CH0 left, CH2 right)
-                .y       = 2047,      // unused, centered
-                .z       = inv[3],    // throttle (CH3 up)
-                .rx      = inv[1],    // brake (CH1 down)
+                .x       = steering,            // steering (CH0 left, CH2 right)
+                .y       = 2047,                // unused, centered
+                .z       = inv[MCP3008_CH3],    // throttle (CH3 up)
+                .rx      = inv[MCP3008_CH1],    // brake (CH1 down)
                 .buttons = 0,
             };
 
