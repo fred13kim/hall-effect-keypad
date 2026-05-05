@@ -8,7 +8,8 @@ class ProfileManager:
         self.profile_data = self.load_profile()
 
         self.min_adc = 270
-        self.rest_adc = 500
+        self.rest_adc = 490
+
     def load_profile(self):
         with open(self.profile_path, "r", encoding="utf-8") as file:
             return json.load(file)
@@ -35,9 +36,15 @@ class ProfileManager:
         return self.get_active_profile()["buttons"][button_id]
 
     def adc_to_level(self, adc_value):
+        """
+        Convert ADC to normalized press level.
 
+        Since pressing lowers ADC:
+        adc = rest_adc -> level = 1.0
+        adc = min_adc  -> level = 0.0
+        """
         if self.min_adc == self.rest_adc:
-            return 0.0
+            return 1.0
 
         level = (adc_value - self.min_adc) / (self.rest_adc - self.min_adc)
         return max(0.0, min(1.0, level))
@@ -49,11 +56,21 @@ class ProfileManager:
         breakpoints = button_config["breakpoints"]
         outputs = button_config["outputs"]
 
-        for index, breakpoint in enumerate(breakpoints):
-            if level >= breakpoint:
-                return outputs[index]
+        if len(outputs) != len(breakpoints) + 1:
+            raise ValueError(
+                f"Button {button_id} has {len(breakpoints)} breakpoints "
+                f"but {len(outputs)} outputs. Expected outputs = {len(breakpoints)+1}."
+            )
 
-        return outputs[-1]
+        output_index = 0
+
+        for breakpoint in breakpoints:
+            if level < breakpoint:
+                output_index += 1
+            else:
+                break
+
+        return outputs[output_index]
 
     def get_output_from_adc(self, button_id, adc_value):
         level = self.adc_to_level(adc_value)
