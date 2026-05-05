@@ -88,7 +88,7 @@ def _load_v2_profiles(raw_profiles: Dict[str, Any], profiles: Dict[int, Profile]
 
                 outputs = list(button_json.get("outputs", fallback.outputs))
 
-                mapping = IntervalMapping(reakpoints=breakpoints, outputs=outputs)
+                mapping = IntervalMapping(breakpoints=breakpoints, outputs=outputs)
 
                 validate_interval_mapping(mapping)
 
