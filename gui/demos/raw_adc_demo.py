@@ -101,7 +101,7 @@ class RawADCDemo(QMainWindow):
         plot_grid = QGridLayout()
         for ch in range(NUM_CHANNELS):
             plot = pg.PlotWidget(title=f"Channel {ch}")
-            plot.setYRange(200, 600)          # 12-bit ADC ceiling
+            plot.setYRange(200, 1024)          # 12-bit ADC ceiling
             plot.setXRange(0, 199, padding=0)
             plot.setLabel("left", "ADC")
             plot.setLabel("bottom", "Sample")
