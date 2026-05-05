@@ -97,26 +97,26 @@ void adc_task(void *param) {
                 mcp3008_read(&mcp, ch, &raw[ch]);
             }
 
-            // Invert and scale: rest~500->0, pressed~270->1023
+            // Invert and scale: rest~1024->0, pressed~512->4095
             uint16_t inv[4];
             for (int i = 0; i < 4; i++) {
-                int16_t delta = (int16_t)500 - (int16_t)raw[i];
+                int16_t delta = (int16_t)1023 - (int16_t)raw[i];
                 if (delta < 0)    delta = 0;
-                inv[i] = (uint16_t)(delta * 1023 / 230);
-                if (inv[i] > 1023) inv[i] = 1023;
+                inv[i] = (uint16_t)(delta * 4095 / 511);
+                if (inv[i] > 4095) inv[i] = 4095;
             }
 
-            // Steering: CH0=left, CH2=right, differential centered at 512
-            int16_t steering = 512 + ((int16_t)inv[2] - (int16_t)inv[0]) / 2;
+            // Steering: CH0=left, CH2=right, differential across full range
+            int16_t steering = ((int16_t)inv[2] - (int16_t)inv[0] + 4095) / 2;
             if (steering < 0)    steering = 0;
-            if (steering > 1023) steering = 1023;
+            if (steering > 4095) steering = 4095;
 
             struct __attribute__((packed)) {
                 uint16_t x, y, z, rx;
                 uint8_t  buttons;
             } report = {
                 .x       = steering,  // steering (CH0 left, CH2 right)
-                .y       = 512,       // unused, centered
+                .y       = 2047,      // unused, centered
                 .z       = inv[3],    // throttle (CH3 up)
                 .rx      = inv[1],    // brake (CH1 down)
                 .buttons = 0,

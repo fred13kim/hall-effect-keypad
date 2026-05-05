@@ -14,7 +14,7 @@ uint8_t const desc_hid_report[] = {
         HID_USAGE(HID_USAGE_DESKTOP_Z),
         HID_USAGE(HID_USAGE_DESKTOP_RX),
         HID_LOGICAL_MIN(0),
-        HID_LOGICAL_MAX_N(1023, 2),
+        HID_LOGICAL_MAX_N(4096, 2),
         HID_REPORT_SIZE(16),
         HID_REPORT_COUNT(4),
         HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
