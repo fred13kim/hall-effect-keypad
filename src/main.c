@@ -88,22 +88,45 @@ void usb_device_task(void *param) {
 
 void adc_task(void *param) {
     (void) param;
-
     display_lcd();
     mcp3008_init(&mcp);
-
     while (true) {
-	    if (tud_hid_ready()) {
-		    uint16_t raw[4];
-		    for (mcp3008_channel_t ch = MCP3008_CH0; ch < NUM_CHANNELS; ch++) {
-			    mcp3008_read(&mcp, ch, &raw[ch]);
-		    }
-		    tud_hid_report(0, raw, sizeof(raw));
-	    }
-	    vTaskDelay(pdMS_TO_TICKS(1));
+        if (tud_hid_ready()) {
+            uint16_t raw[4];
+            for (mcp3008_channel_t ch = MCP3008_CH0; ch < NUM_CHANNELS; ch++) {
+                mcp3008_read(&mcp, ch, &raw[ch]);
+            }
+
+            // Invert and scale: rest~500->0, pressed~270->1023
+            uint16_t inv[4];
+            for (int i = 0; i < 4; i++) {
+                int16_t delta = (int16_t)500 - (int16_t)raw[i];
+                if (delta < 0)    delta = 0;
+                inv[i] = (uint16_t)(delta * 1023 / 230);
+                if (inv[i] > 1023) inv[i] = 1023;
+            }
+
+            // Steering: CH0=left, CH2=right, differential centered at 512
+            int16_t steering = 512 + ((int16_t)inv[2] - (int16_t)inv[0]) / 2;
+            if (steering < 0)    steering = 0;
+            if (steering > 1023) steering = 1023;
+
+            struct __attribute__((packed)) {
+                uint16_t x, y, z, rx;
+                uint8_t  buttons;
+            } report = {
+                .x       = steering,  // steering (CH0 left, CH2 right)
+                .y       = 512,       // unused, centered
+                .z       = inv[3],    // throttle (CH3 up)
+                .rx      = inv[1],    // brake (CH1 down)
+                .buttons = 0,
+            };
+
+            tud_hid_report(0, &report, sizeof(report));
+        }
+        vTaskDelay(pdMS_TO_TICKS(1));
     }
 }
-
 
 int main(void) {
     stdio_init_all();

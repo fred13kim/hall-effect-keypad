@@ -2,10 +2,12 @@
 
 // HID Report Descriptor
 // Treat as joystick with analog axis 
+
 uint8_t const desc_hid_report[] = {
     HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
     HID_USAGE(HID_USAGE_DESKTOP_GAMEPAD),
     HID_COLLECTION(HID_COLLECTION_APPLICATION),
+        // Axes
         HID_USAGE_PAGE(HID_USAGE_PAGE_DESKTOP),
         HID_USAGE(HID_USAGE_DESKTOP_X),
         HID_USAGE(HID_USAGE_DESKTOP_Y),
@@ -15,6 +17,16 @@ uint8_t const desc_hid_report[] = {
         HID_LOGICAL_MAX_N(1023, 2),
         HID_REPORT_SIZE(16),
         HID_REPORT_COUNT(4),
+        HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
+
+        // Buttons (required for browser Gamepad API)
+        HID_USAGE_PAGE(HID_USAGE_PAGE_BUTTON),
+        HID_USAGE_MIN(1),
+        HID_USAGE_MAX(8),
+        HID_LOGICAL_MIN(0),
+        HID_LOGICAL_MAX(1),
+        HID_REPORT_SIZE(1),
+        HID_REPORT_COUNT(8),
         HID_INPUT(HID_DATA | HID_VARIABLE | HID_ABSOLUTE),
     HID_COLLECTION_END
 };
