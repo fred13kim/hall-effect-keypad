@@ -1,7 +1,13 @@
 name: snr-proj
 channels:
+  - conda-forge
   - defaults
 dependencies:
+  - python
   - numpy
   - pyside6
   - pyqtgraph
+  - hidapi
+  - pip
+  - pip:
+    - hid
