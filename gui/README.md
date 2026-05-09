@@ -6,7 +6,6 @@ Run `conda env create -f environment.yml`
 
 Run `conda activate snr-proj`
 
-
 # Profile Customizer App
 
 A modularized PySide6 profile customization skeleton.
@@ -20,9 +19,18 @@ python3 layout.py
 ## Layout
 
 ```text
-profile_customizer_app/
+gui/
 ├── layout.py
+├── demos/
+    ├── typing_demo.py
+    ├── raw_adc_demo.py
+    └── demo_reaction.py
+├── tests/
+    ├── adc_test_profile.py
+    ├── adc_test_values.py
+    └── test_hid_read.py
 ├── README.md
+├── profile_manager.py
 └── profile_customizer/
     ├── __init__.py
     ├── defaults.py
@@ -30,15 +38,6 @@ profile_customizer_app/
     ├── mapping.py
     ├── models.py
     ├── paths.py
-    └── persistence.py
+    ├── persistence.py
+    └── threshold_editor.py
 ```
-
-## Files
-
-- `models.py`: pure profile/config dataclasses.
-- `mapping.py`: validation and normalized-voltage mapping logic.
-- `defaults.py`: default presets for profiles/buttons.
-- `persistence.py`: JSON load/save and schema migration.
-- `dialog.py`: PySide6 UI only.
-- `paths.py`: config file paths.
-- `layout.py`: application entry point.
