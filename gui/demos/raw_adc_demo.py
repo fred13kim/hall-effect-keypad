@@ -65,7 +65,7 @@ class RawADCDemo(QMainWindow):
         self.reload_profile_btn.clicked.connect(self.reload_profile)
 
         # Per-channel state
-        self.samples = [deque(maxlen=200) for _ in range(NUM_CHANNELS)]
+        self.samples = [deque(maxlen=100) for _ in range(NUM_CHANNELS)]
         self.value_labels = []
         self.state_labels = []
         self.curves = []
@@ -103,9 +103,9 @@ class RawADCDemo(QMainWindow):
         # Bottom: 2×2 grid of plots
         plot_grid = QGridLayout()
         for ch in range(NUM_CHANNELS):
-            plot = pg.PlotWidget(title=f"Channel {ch}")
-            plot.setYRange(0, 1024)          # 10-bit ADC ceiling
-            plot.setXRange(0, 199, padding=0)
+            plot = pg.PlotWidget(title=f"Channel {ch+1}")
+            plot.setYRange(300, 1224)          # 10-bit ADC ceiling
+            plot.setXRange(0, 99, padding=0)
             plot.setLabel("left", "ADC")
             plot.setLabel("bottom", "Sample")
             plot.showGrid(x=True, y=True)
@@ -125,7 +125,7 @@ class RawADCDemo(QMainWindow):
         # Timer
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_adc)
-        self.timer.start(3)  # 3 ms  ~333 Hz poll
+        self.timer.start(5)  # 3 ms  ~333 Hz poll
     
     def update_active_profile_label(self):
         active_profile = self.profile_manager.get_active_profile_id()

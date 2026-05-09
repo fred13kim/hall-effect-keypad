@@ -7,8 +7,8 @@ class ProfileManager:
         self.active_profile_id = str(active_profile_id)
         self.profile_data = self.load_profile()
 
-        self.min_adc = 270
-        self.rest_adc = 490
+        self.min_adc = 600
+        self.rest_adc = 1023
 
     def load_profile(self):
         with open(self.profile_path, "r", encoding="utf-8") as file:
