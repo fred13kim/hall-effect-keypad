@@ -42,6 +42,7 @@ BACKFORCE_WIDTH = 11; // Needs to fit inside/under the keycap but not terribly t
 module levitator(magnet_diameter, magnet_height, magnet_distance=3.75, magnet_tolerance=MAGNET_TOLERANCE, wall_thickness=0.9, thickness=1, stem_tolerance=0.15) {
     // NOTE: stem_tolerance is the keycap stem; not the switch stem
     height = 2 + wall_thickness; // Just enough to grab the stem
+
     difference() {
         translate([0,0,height/2]) union() {
             // Main body of the thing
@@ -51,37 +52,53 @@ module levitator(magnet_diameter, magnet_height, magnet_distance=3.75, magnet_to
                     CHERRY_CYLINDER_DIAMETER+wall_thickness*2+stem_tolerance*2,
                     CHERRY_CYLINDER_DIAMETER+wall_thickness*2+stem_tolerance*2,
                     height], center=true);
+
                 translate([magnet_distance,magnet_distance,0])
                     cylinder(d=magnet_diameter+wall_thickness*2, h=height, center=true);
             }
-            // Body of the part that holds the magnet (hollowed out below)
+
+            // Body of the part that holds the magnet
             translate([magnet_distance,magnet_distance,0])
                 cylinder(d=magnet_diameter+wall_thickness*2, h=height, center=true);
         }
-        translate([0,0,-5]) cherry_cross(length=10); // Just don't die on it
-        translate([0,0,height/2+thickness+wall_thickness/2]) // Stem cutout
+
+        translate([0,0,-5])
+            cherry_cross(length=10);
+
+        translate([0,0,height/2+thickness+wall_thickness/2])
             cube([
                 CHERRY_CYLINDER_DIAMETER+stem_tolerance*2,
                 CHERRY_CYLINDER_DIAMETER+stem_tolerance*2,
                 height+wall_thickness], center=true);
+
+        // Magnet cavity / hole
         translate([magnet_distance,magnet_distance,(magnet_height+magnet_tolerance)/2-0.01]) {
             cylinder(d=magnet_diameter, h=magnet_height+magnet_tolerance, center=true);
-            // So we can pop the magnet out if we screw up which pole is facing down:
-//            rotate([0,0,45])
-//                cube([magnet_diameter/3,magnet_diameter/3,100], center=true);
         }
-        // Make an angled hole in the top that stops the magnet from coming out while also letting you push it out if needed to flip it around
+
+        // Angled retaining hole
         translate([magnet_distance,magnet_distance,wall_thickness/2+(magnet_height+magnet_tolerance)-0.01])
             cylinder(d1=magnet_diameter, d2=magnet_diameter/1.5, h=wall_thickness, center=true);
-        // Cut off a few bits here and there so it can fit under more keycaps
-//        translate([magnet_distance*2+wall_thickness/1.25,magnet_distance*1.25,magnet_diameter/2])
-//            cube([magnet_diameter, magnet_diameter*2, magnet_diameter*2], center=true);
-//        translate([magnet_distance*1.25,magnet_distance*2+wall_thickness/1.25,magnet_diameter/2])
-//            cube([magnet_diameter*2, magnet_diameter, magnet_diameter*2], center=true);
+
+        // Cut off a bit so it fits under keycaps
         translate([magnet_distance*1.5,magnet_distance*1.5,magnet_diameter/1.35])
             rotate([0,-50,45])
                 cube([magnet_diameter, magnet_diameter*2, magnet_diameter*2], center=true);
     }
+
+    // DISPLAY-ONLY RED MAGNET
+    // This is outside difference(), so it renders as visible geometry.
+    color([1, 0, 0, 1])
+    translate([
+        magnet_distance,
+        magnet_distance,
+        magnet_height/2
+    ])
+        cylinder(
+            d = magnet_diameter * 0.95,
+            h = magnet_height,
+            center = true
+        );
 }
 
 module levitator_double_sided(magnet_diameter, magnet_height, magnet_distance=3.75, magnet_tolerance=MAGNET_TOLERANCE, wall_thickness=0.9, thickness=1, stem_tolerance=0.15) {

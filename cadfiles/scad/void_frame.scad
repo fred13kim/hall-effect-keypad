@@ -1,5 +1,5 @@
 // --- User Settings ---
-switch_width = 14.2;      // Square hole for the switch body
+switch_width = 14.3;      // Square hole for the switch body
 leg_height = 5.0;         // Clearance for the Hall Effect sensor
 wall_thickness = 3.0;     // Thickness of the bridge legs
 pin_diameter = 0.8;       // Fit for breadboard holes
@@ -23,7 +23,7 @@ module breadboard_bridge() {
             
             // Hollow center for the sensor
             translate([0, 0, leg_height / 2])
-                cube([switch_width - 1, switch_width - 1, leg_height + 1], center = true);
+                cube([switch_width, switch_width, leg_height + 1], center = true);
             
             // Side arches for wire access
                 cube([outer_size + 2, switch_width - 3, leg_height + 2], center = true);
@@ -50,7 +50,7 @@ module breadboard_bridge() {
                     // THE MAIN PEG
                     // Starts from the end of the fillet to reach total pin_length
                     translate([0, 0, -pin_length])
-                        cylinder(d = pin_diameter, h = pin_length - fillet_height + 0.1);
+                        cylinder(d = pin_diameter, h = pin_length - fillet_height + 0.2);
                 }
             }
         }

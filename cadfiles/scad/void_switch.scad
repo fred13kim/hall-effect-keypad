@@ -41,14 +41,14 @@ use <utils.scad>
 // IMPORTANT VARIABLES (customize to your liking):
 
 // The amount of space interposed between the magnets. Controls how strong the switch will be; The higher the value the less force will be required to press the switch. Look at the console output to see the calculated switch strength (e.g. "NOTE: ESTIMATED STRENGTH/FORCE: ~56g"). Highly dependent on the strength and thickness of your magnets.
-MAGNET_VOID = 1.0; // [0.1:0.1:3]
+MAGNET_VOID = 2.3; // [0.1:0.1:3]
 /* MAGNET_VOID NOTES:
     * The higher the MAGNET_VOID the lower the (initial) force to move (press) the switch.
     * You're just going to have to experiment with a few different values here to see what you like.
     * The total travel of the switch has an impact on how much extra force the levitator will add.  Beyond ~3.5mmm of travel it doesn't add much (2-5g) but anything shorter than that can result in a non-trivial amount of force being added (say, 7-10g for 2mm of travel).  Having said that, anything below ~3.5mm of travel doesn't usually need the levitator anyway so there's that.
 */
 // 2-4mm of travel is traditional for mechanical key switches
-TOTAL_TRAVEL = 4; // [1:0.1:20]
+TOTAL_TRAVEL = 6; // [1:0.1:20]
 // How much extra space (up/down) will be used to contain the stem (does not impact TOTAL_TRAVEL).  Longer == less wobble BUT the switch will be taller.  Doesn't really impact the feel of the switch otherwise.
 SHEATH_LENGTH = 0.2; // [0:0.1:2]
 // Wiggle room inside the sheath for the stem. If your stem doesn't effortlessly slide inside the sheath you need to increase the tolerance or check your printing layer height isn't messing with it.
@@ -59,7 +59,7 @@ STEM_TOLERANCE = 0.11; // [0.01:0.01:0.3]
 // Diameter of the magnet that sits on top of the switch body
 BODY_MAGNET_DIAMETER = 4; // [3:1:5]
 // Thickness of the top magnet (use calipers to measure it!). NOTE: Cheap "4x2mm" N35 magnets are usually 4x1.7 or 4x1.8mm.  MEASURE YOUR MAGNETS WITH CALIPERS TO CHECK!
-BODY_MAGNET_HEIGHT = 1.8; // [1:0.1:3]
+BODY_MAGNET_HEIGHT = 2; // [1:0.1:3]
 // NOTE: CHINESE SELLERS LIE! ~1.75mm is the norm for "4x2mm" N35 magnets... Bastards
 
 // Only used when calculating the strength of your switch (it gets spit out to the OpenSCAD console... "NOTE: ESTIMATED STRENGTH/FORCE: ~56g"). NOTE: Does not include the force added by the levitator!
@@ -88,7 +88,7 @@ BODY_LENGTH = 14.2;
 // Width of the switch_body() (Seriously: Look at COVER_OVERHANG!)
 BODY_WIDTH = 14.2;
 // Technically the body doesn't need to be the same height as the sheath and stem are long.  If this is set to anything other than 0 the body will be of the height specified.  Otherwise its height will be calculated based on the length of the sheath.  AT LEAST 6 IS RECOMMENDED (so the clips will work).
-BODY_HEIGHT = 0;
+BODY_HEIGHT = 15;
 // The corner radius around the edges of the switch body
 BODY_CORNER_RADIUS = 0.5;
 // How thick the walls (just the sides) of the switch will be (in general)
