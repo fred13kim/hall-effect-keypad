@@ -267,7 +267,7 @@ if __name__ == "__main__":
         window = TypingDemo()
     except Exception as e:
         sys.exit(1)
-        
+
     window.show()
 
     sys.exit(app.exec())

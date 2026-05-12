@@ -17,7 +17,7 @@ NUM_BUTTONS = 4
 NUM_PROFILES = 4
 
 class ProfileCustomizerDialog(QDialog):
-    num_buttons = NUM_BUTTONS 
+    num_buttons = NUM_BUTTONS
     num_profiles = NUM_PROFILES
 
     def __init__(self) -> None:
@@ -113,7 +113,7 @@ class ProfileCustomizerDialog(QDialog):
         form.addRow("Thresholds / outputs:", self._threshold_editor)
 
         return form
-    
+
     def _build_apply_reset_row(self) -> QHBoxLayout:
         row = QHBoxLayout()
 

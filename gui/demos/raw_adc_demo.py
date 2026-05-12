@@ -50,7 +50,7 @@ class RawADCDemo(QMainWindow):
 
         self.reader = HIDReader(VID, PID)
         config_path = PARENT_DIR / "configs" / "profiles.json"
-        
+
         self.profile_manager = ProfileManager(
             profile_path=str(config_path),
             active_profile_id="1",
@@ -67,7 +67,7 @@ class RawADCDemo(QMainWindow):
         self.state_labels = []
         self.curves = []
 
-        # Layout 
+        # Layout
         root = QWidget()
         root_layout = QVBoxLayout(root)
         top_control_row = QHBoxLayout()
@@ -123,7 +123,7 @@ class RawADCDemo(QMainWindow):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_adc)
         self.timer.start(5)  # 5 ms  ~200 Hz poll
-    
+
     def update_active_profile_label(self):
         active_profile = self.profile_manager.get_active_profile_id()
         self.active_profile_label.setText(f"Active Profile: {active_profile}")
@@ -139,7 +139,7 @@ class RawADCDemo(QMainWindow):
         for ch in range(NUM_CHANNELS):
             button_id = self.profile_manager.get_button_for_channel(str(ch))
             button_config = self.profile_manager.get_button_config(button_id)
-    # Slot 
+    # Slot
     def update_adc(self):
         values = self.reader.read_adc_all_channels()
         if values is None:
