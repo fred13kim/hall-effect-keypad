@@ -29,4 +29,3 @@ debug:
 flash:
 	@echo "Flashing the target..."
 	$(OPENOCD_CMD) -c "program build/$(TARGET).elf verify reset exit"
-
