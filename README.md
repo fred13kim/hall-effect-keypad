@@ -30,4 +30,3 @@ make debug
 # to display serial output
 picocom <device> -b 115200
 ```
-
