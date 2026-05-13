@@ -11,7 +11,10 @@ from profile_customizer.paths import PROFILES_PATH
 
 CURRENT_PROFILE_SCHEMA_VERSION = 2
 
-def load_profiles(num_profiles: int = 4, profiles_path: Path = PROFILES_PATH) -> Dict[int, Profile]:
+
+def load_profiles(
+    num_profiles: int = 4, profiles_path: Path = PROFILES_PATH
+) -> Dict[int, Profile]:
     profiles = default_profiles(num_profiles)
 
     if not profiles_path.exists():
@@ -33,7 +36,11 @@ def load_profiles(num_profiles: int = 4, profiles_path: Path = PROFILES_PATH) ->
     return _load_v2_profiles(raw_profiles, profiles, num_profiles)
 
 
-def save_profiles(profiles: Dict[int, Profile], profiles_path: Path = PROFILES_PATH, active_profile: int = 1) -> None:
+def save_profiles(
+    profiles: Dict[int, Profile],
+    profiles_path: Path = PROFILES_PATH,
+    active_profile: int = 1,
+) -> None:
     data: Dict[str, Any] = {
         "version": CURRENT_PROFILE_SCHEMA_VERSION,
         "active_profile": str(active_profile),
@@ -68,7 +75,11 @@ def save_profiles(profiles: Dict[int, Profile], profiles_path: Path = PROFILES_P
     )
 
 
-def _load_v2_profiles(raw_profiles: Dict[str, Any], profiles: Dict[int, Profile], num_profiles: int,) -> Dict[int, Profile]:
+def _load_v2_profiles(
+    raw_profiles: Dict[str, Any],
+    profiles: Dict[int, Profile],
+    num_profiles: int,
+) -> Dict[int, Profile]:
     for key, value in raw_profiles.items():
         try:
             profile_id = int(key)

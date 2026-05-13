@@ -8,7 +8,16 @@ from pathlib import Path
 import hid
 from pynput.keyboard import Controller
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QCheckBox, QPushButton)
+from PySide6.QtWidgets import (
+    QApplication,
+    QLabel,
+    QMainWindow,
+    QVBoxLayout,
+    QHBoxLayout,
+    QWidget,
+    QCheckBox,
+    QPushButton,
+)
 
 GUI_DIR = Path(__file__).resolve().parent.parent
 PROFILE_PATH = GUI_DIR / "configs" / "profiles.json"
@@ -21,14 +30,14 @@ VID = 0xCAFE
 PID = 0x4004
 NUM_CHANNELS = 4
 
-'''
+"""
 Lower = faster response, but more susceptible to jitter.
-'''
+"""
 DEBOUNCE_MS = 15
 
-'''
+"""
 How often Qt reads HID
-'''
+"""
 TIMER_MS = 3
 
 
@@ -183,14 +192,10 @@ class TypingDemo(QMainWindow):
         )
 
         self.title_label = QLabel("Hall Effect Keypad Typing Demo")
-        self.title_label.setStyleSheet(
-            "font-size: 22px; "
-            "font-weight: bold;"
-        )
+        self.title_label.setStyleSheet("font-size: 22px; " "font-weight: bold;")
 
         self.instructions_label = QLabel(
-            "Demo Instructions:\n"
-            "Press a Hall-effect key to type the mapped output."
+            "Demo Instructions:\n" "Press a Hall-effect key to type the mapped output."
         )
         self.instructions_label.setWordWrap(True)
         self.instructions_label.setStyleSheet("font-size: 13px;")
@@ -205,10 +210,7 @@ class TypingDemo(QMainWindow):
         self.reload_button.setFixedHeight(28)
 
         self.profile_label = QLabel()
-        self.profile_label.setStyleSheet(
-            "font-size: 14px; "
-            "font-weight: bold;"
-        )
+        self.profile_label.setStyleSheet("font-size: 14px; " "font-weight: bold;")
 
         controls_layout = QHBoxLayout()
         controls_layout.addWidget(self.typing_checkbox)
@@ -259,6 +261,7 @@ class TypingDemo(QMainWindow):
     def closeEvent(self, event):
         self.reader.close()
         event.accept()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

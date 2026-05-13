@@ -7,7 +7,17 @@ from pathlib import Path
 import hid
 import pyqtgraph as pg
 from PySide6.QtCore import QTimer
-from PySide6.QtWidgets import (QApplication, QLabel, QMainWindow, QVBoxLayout, QPushButton, QHBoxLayout, QGridLayout, QWidget, QGroupBox)
+from PySide6.QtWidgets import (
+    QApplication,
+    QLabel,
+    QMainWindow,
+    QVBoxLayout,
+    QPushButton,
+    QHBoxLayout,
+    QGridLayout,
+    QWidget,
+    QGroupBox,
+)
 
 # Script Paths
 PARENT_DIR = Path(__file__).resolve().parent.parent
@@ -22,6 +32,7 @@ PID = 0x4004
 NUM_CHANNELS = 4
 CHANNEL_COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12"]
 
+
 class HIDReader:
     def __init__(self, vid, pid):
         self.device = hid.Device(vid, pid)
@@ -35,7 +46,7 @@ class HIDReader:
             if not data:
                 break
             if len(data) >= 8:  # 4 × uint16 = 8 bytes
-                adc_values = struct.unpack_from('<4H', bytes(data), 0)
+                adc_values = struct.unpack_from("<4H", bytes(data), 0)
         return adc_values
 
     def close(self):
@@ -101,13 +112,14 @@ class RawADCDemo(QMainWindow):
         plot_grid = QGridLayout()
         for ch in range(NUM_CHANNELS):
             plot = pg.PlotWidget(title=f"Channel {ch}")
-            plot.setYRange(200, 1024)          # 12-bit ADC ceiling
+            plot.setYRange(200, 1024)  # 12-bit ADC ceiling
             plot.setXRange(0, 199, padding=0)
             plot.setLabel("left", "ADC")
             plot.setLabel("bottom", "Sample")
             plot.showGrid(x=True, y=True)
             curve = plot.plot(
-                [], [],
+                [],
+                [],
                 pen=pg.mkPen(color=CHANNEL_COLORS[ch], width=2),
             )
             self.curves.append(curve)
@@ -128,7 +140,6 @@ class RawADCDemo(QMainWindow):
         active_profile = self.profile_manager.get_active_profile_id()
         self.active_profile_label.setText(f"Active Profile: {active_profile}")
 
-
     def reload_profile(self):
         self.profile_manager.reload()
         self.update_active_profile_label()
@@ -139,6 +150,7 @@ class RawADCDemo(QMainWindow):
         for ch in range(NUM_CHANNELS):
             button_id = self.profile_manager.get_button_for_channel(str(ch))
             button_config = self.profile_manager.get_button_config(button_id)
+
     # Slot
     def update_adc(self):
         values = self.reader.read_adc_all_channels()
@@ -153,8 +165,7 @@ class RawADCDemo(QMainWindow):
 
             self.value_labels[ch].setText(f"ADC: {value}")
             self.state_labels[ch].setText(
-                f"Profile {active_profile} | "
-                f"Output: {output} "
+                f"Profile {active_profile} | " f"Output: {output} "
             )
 
             self.samples[ch].append(value)

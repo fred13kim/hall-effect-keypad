@@ -117,10 +117,7 @@ class ReactionTest(QMainWindow):
         self.state = "result"
         self.reaction_timer.stop()
 
-        self.set_red_screen(
-            "Too early!\n\n"
-            "Release and press any key to restart"
-        )
+        self.set_red_screen("Too early!\n\n" "Release and press any key to restart")
 
     def update_key_states(self, adc_values):
         """

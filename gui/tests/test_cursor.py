@@ -26,11 +26,11 @@ HARD_PRESS_ADC = 370
 # If pressing makes ADC go down, use "decreasing".
 PRESS_DIRECTION = "decreasing"
 
-DEADZONE = 0.02          # ignore tiny noise near rest
-MAX_SPEED = 25           # pixels per update at full press
-MIN_SPEED = 3            # optional slow movement once active
-CURVE_POWER = 1.6        # higher = finer low-speed control
-UPDATE_DT = 0.01         # 10 ms loop
+DEADZONE = 0.02  # ignore tiny noise near rest
+MAX_SPEED = 25  # pixels per update at full press
+MIN_SPEED = 3  # optional slow movement once active
+CURVE_POWER = 1.6  # higher = finer low-speed control
+UPDATE_DT = 0.01  # 10 ms loop
 
 
 class HIDReader:
@@ -100,7 +100,7 @@ def level_to_speed(level):
     if level <= 0:
         return 0.0
 
-    curved = level ** CURVE_POWER
+    curved = level**CURVE_POWER
     return MIN_SPEED + curved * (MAX_SPEED - MIN_SPEED)
 
 

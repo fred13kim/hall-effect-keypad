@@ -12,6 +12,7 @@ device.nonblocking = True
 min_adc = [None] * 4
 max_adc = [None] * 4
 
+
 def get_latest_adc_reading(dev):
     """Drain the HID queue and return the latest 4-channel reading."""
     latest_values = None
@@ -21,8 +22,9 @@ def get_latest_adc_reading(dev):
             break
         # Expecting at least 8 bytes for 4 channels (uint16_t x 4)
         if len(data) >= 8:
-            latest_values = struct.unpack_from('<4H', bytes(data), 0)
+            latest_values = struct.unpack_from("<4H", bytes(data), 0)
     return latest_values
+
 
 try:
     while True:
@@ -38,7 +40,9 @@ try:
                     max_adc[i] = val
 
             # Format output for all 4 channels
-            channels_str = " | ".join([f"CH{i}: {v:4d}" for i, v in enumerate(adc_values)])
+            channels_str = " | ".join(
+                [f"CH{i}: {v:4d}" for i, v in enumerate(adc_values)]
+            )
             print(f"\r{channels_str}", end="")
 
         time.sleep(0.005)

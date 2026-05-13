@@ -20,7 +20,12 @@ from profile_customizer.models import IntervalMapping
 
 
 class ThresholdEditor(QWidget):
-    def __init__(self, mapping: IntervalMapping, on_change: Optional[Callable[[], None]] = None, parent=None,) -> None:
+    def __init__(
+        self,
+        mapping: IntervalMapping,
+        on_change: Optional[Callable[[], None]] = None,
+        parent=None,
+    ) -> None:
         super().__init__(parent)
 
         self._mapping = mapping
@@ -84,9 +89,7 @@ class ThresholdEditor(QWidget):
             edit = QLineEdit(output)
             edit.setFixedWidth(70)
 
-            edit.textChanged.connect(
-                lambda text, i=index: self._update_output(i, text)
-            )
+            edit.textChanged.connect(lambda text, i=index: self._update_output(i, text))
 
             self._outputs_layout.addWidget(label, grid_row, grid_col)
             self._outputs_layout.addWidget(edit, grid_row, grid_col + 1)
@@ -113,11 +116,15 @@ class ThresholdEditor(QWidget):
             spinbox.setFixedWidth(80)
 
             slider.valueChanged.connect(
-                lambda value, i=index, box=spinbox: self._update_breakpoint_from_slider(i, value, box)
+                lambda value, i=index, box=spinbox: self._update_breakpoint_from_slider(
+                    i, value, box
+                )
             )
 
             spinbox.valueChanged.connect(
-                lambda value, i=index, s=slider: self._update_breakpoint_from_spinbox(i, value, s)
+                lambda value, i=index, s=slider: self._update_breakpoint_from_spinbox(
+                    i, value, s
+                )
             )
 
             row.addWidget(name_label)
@@ -131,7 +138,9 @@ class ThresholdEditor(QWidget):
         self._notify_changed()
         self._rebuild()
 
-    def _update_breakpoint_from_slider(self, index: int, value: int, spinbox: QDoubleSpinBox) -> None:
+    def _update_breakpoint_from_slider(
+        self, index: int, value: int, spinbox: QDoubleSpinBox
+    ) -> None:
         new_value = value / 100.0
 
         spinbox.blockSignals(True)
@@ -140,7 +149,12 @@ class ThresholdEditor(QWidget):
 
         self._set_breakpoint(index, new_value)
 
-    def _update_breakpoint_from_spinbox(self, index: int, value: float, slider: QSlider,) -> None:
+    def _update_breakpoint_from_spinbox(
+        self,
+        index: int,
+        value: float,
+        slider: QSlider,
+    ) -> None:
         slider.blockSignals(True)
         slider.setValue(int(value * 100))
         slider.blockSignals(False)
@@ -162,7 +176,9 @@ class ThresholdEditor(QWidget):
             self._mapping.breakpoints.append(0.50)
         else:
             last_breakpoint = self._mapping.breakpoints[-1]
-            self._mapping.breakpoints.append(round(max(0.01, last_breakpoint - 0.10), 2))
+            self._mapping.breakpoints.append(
+                round(max(0.01, last_breakpoint - 0.10), 2)
+            )
 
         self._mapping.breakpoints.sort(reverse=True)
 

@@ -7,6 +7,7 @@ if str(PARENT_DIR) not in sys.path:
     sys.path.insert(0, str(PARENT_DIR))
 
 from profile_manager import ProfileManager
+
 config_path = PARENT_DIR / "configs" / "profiles.json"
 pm = ProfileManager(config_path)
 

@@ -9,15 +9,14 @@ def validate_interval_mapping(mapping):
 
     if len(outputs) != len(breakpoints) + 1:
         raise ValueError(
-            "Number of outputs must be exactly one more than number of breakpoints.")
+            "Number of outputs must be exactly one more than number of breakpoints."
+        )
 
     if any(bp < 0.0 or bp > 1.0 for bp in breakpoints):
         raise ValueError("Breakpoints must be between 0.0 and 1.0.")
 
     if any(breakpoints[i] <= breakpoints[i + 1] for i in range(len(breakpoints) - 1)):
-        raise ValueError(
-            "Breakpoints must be strictly decreasing, e.g. [0.85, 0.25]."
-        )
+        raise ValueError("Breakpoints must be strictly decreasing, e.g. [0.85, 0.25].")
 
     return True
 

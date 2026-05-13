@@ -4,7 +4,20 @@ import json
 from typing import Dict
 
 from PySide6.QtCore import QSignalBlocker
-from PySide6.QtWidgets import (QButtonGroup, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QHBoxLayout, QLabel, QMenu, QMenuBar, QMessageBox, QPushButton, QVBoxLayout)
+from PySide6.QtWidgets import (
+    QButtonGroup,
+    QDialog,
+    QDialogButtonBox,
+    QFormLayout,
+    QGroupBox,
+    QHBoxLayout,
+    QLabel,
+    QMenu,
+    QMenuBar,
+    QMessageBox,
+    QPushButton,
+    QVBoxLayout,
+)
 
 from profile_customizer.threshold_editor import ThresholdEditor
 from profile_customizer.defaults import default_profiles
@@ -15,6 +28,7 @@ from profile_customizer.persistence import load_profiles, save_profiles
 
 NUM_BUTTONS = 4
 NUM_PROFILES = 4
+
 
 class ProfileCustomizerDialog(QDialog):
     num_buttons = NUM_BUTTONS
@@ -37,7 +51,9 @@ class ProfileCustomizerDialog(QDialog):
 
     def _create_main_layout(self) -> None:
         button_box = QDialogButtonBox(
-            QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel)
+            QDialogButtonBox.StandardButton.Save
+            | QDialogButtonBox.StandardButton.Cancel
+        )
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
 
@@ -107,7 +123,9 @@ class ProfileCustomizerDialog(QDialog):
     def _build_mapping_form(self) -> QFormLayout:
         form = QFormLayout()
 
-        mapping = self._profiles[self._current_profile_id].buttons[self._current_button_id]
+        mapping = self._profiles[self._current_profile_id].buttons[
+            self._current_button_id
+        ]
         self._threshold_editor = ThresholdEditor(mapping)
 
         form.addRow("Thresholds / outputs:", self._threshold_editor)
@@ -132,9 +150,13 @@ class ProfileCustomizerDialog(QDialog):
         self._commit_ui_to_profile(self._current_profile_id)
         try:
             save_profiles(self._profiles, active_profile=self._current_profile_id)
-            QMessageBox.information(self, "Saved", f"Saved to {PROFILES_PATH.resolve()}")
+            QMessageBox.information(
+                self, "Saved", f"Saved to {PROFILES_PATH.resolve()}"
+            )
         except Exception as error:
-            QMessageBox.critical(self, "Save failed", f"Could not save profiles:\n{error}")
+            QMessageBox.critical(
+                self, "Save failed", f"Could not save profiles:\n{error}"
+            )
 
     def _on_profile_button_clicked(self, profile_id: int) -> None:
         self._commit_ui_to_profile(self._current_profile_id)
@@ -173,14 +195,20 @@ class ProfileCustomizerDialog(QDialog):
 
         try:
             mapping = self._threshold_editor.mapping()
-            self._profiles[self._current_profile_id].buttons[self._current_button_id] = mapping
+            self._profiles[self._current_profile_id].buttons[
+                self._current_button_id
+            ] = mapping
             QMessageBox.information(self, "Applied", "Mapping applied to this Key.")
         except Exception as error:
-            QMessageBox.critical(self, "Invalid mapping", f"Could not apply mapping:\n{error}")
+            QMessageBox.critical(
+                self, "Invalid mapping", f"Could not apply mapping:\n{error}"
+            )
 
     def _on_reset_profile(self) -> None:
         profile_id = self._current_profile_id
-        self._profiles[profile_id] = default_profiles(self.num_profiles, self.num_buttons)[profile_id]
+        self._profiles[profile_id] = default_profiles(
+            self.num_profiles, self.num_buttons
+        )[profile_id]
         self._load_profile_into_ui(profile_id)
 
     @staticmethod
