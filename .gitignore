@@ -1,8 +1,8 @@
 build
-.envrc
 *.png
 gui/configs/
 gui/profile_customizer/__pycache__
 gui/__pycache__
 .direnv
 __pycache__/
+.cache/
